@@ -1,6 +1,6 @@
 #include "main.h"
 /**
- * checkbltin - checks if the command entered is a built-in
+ * checkbltin - verify if command is builtin
  * @line: input entered by user
  * @ar: array that can be handled by execve
  * @newline: duplicate of line
@@ -11,24 +11,25 @@ int checkbltin(char *line, char **ar, char *newline, char **array)
 {
 	int i = 0;
 
-	if (_strcmp(ar[0], "exit") == 0) /* compares first token to exit */
+	if (_strcmp(ar[0], "exit") == 0)
 	{
-		myfree(line, ar, newline, array);
-		_exit(errno); /* exits with status 0 or errno */
+		modfree(line, ar, newline, array);
+		_exit(errno);
 	}
-	if (_strcmp(ar[0], "env") == 0) /* compares first token to env */
+	else if (_strcmp(ar[0], "env") == 0)
 	{
 		for (i = 0; environ[i] != NULL; i++)
 		{
-			_puts(environ[i]); /* prints string of environ */
+			_puts(environ[i]);
 			write(1, "\n", 1);
 		}
 		return (2);
 	}
-	if (_strcmp(ar[0], "cd") == 0) /* compares first token to exit */
+	else if (_strcmp(ar[0], "cd") == 0)
 	{
 		changedir(ar);
-		return (2); /* go back to shell loop */	}
+		return (2);
+	}
 	return (0);
 }
 /**
@@ -41,20 +42,19 @@ void changedir(char **ar)
 	char *homeval = NULL, *home = NULL;
 
 	if (ar[1] == NULL)
-	{ /* if cd is by itself */
-		for (i = 0; environ[i] != NULL; i++) /* loops through environ */
+		for (i = 0; environ[i] != NULL; i++)
 		{
 			if (_strncmp("HOME=", environ[i], 5) == 0)
-			{ /* find the line matching home */
+			{
 				home = _strdup(environ[i]);
-				strtok(home, "="); /* stores its value */
+				strtok(home, "=");
 				homeval = strtok(NULL, "=");
 				break;
 			}
 		}
-	}
+
 	else
-		homeval = ar[1]; /* homeval is set to 2nd arg */
-	chdir(homeval); /* change directory to homeval */
+		homeval = ar[1];
+	chdir(homeval);
 	free(home);
 }

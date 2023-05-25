@@ -1,8 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-/* HEADER FILES */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -17,65 +15,43 @@
 #include <stdarg.h>
 #include <errno.h>
 
-/*-- ENVIRONMENT --*/
-
 extern char **environ;
 
-/* STRUCTS */
-
 /**
- * struct fmt - types of data and their function
- * @ltr: the type of data
- * @type: pointer to function for type
+ * struct formating - types of data and their function
+ * @ltr: data type
+ * @type: pointer to data type
  */
-typedef struct fmt
+
+typedef struct formating
 {
 	char *ltr;
 	int (*type)();
-} fmt;
+} formating;
 
-/* FUNCTIONS */
+char *_strdup(char *);
+char *_strcat(char *, char *);
+int _strcmp(char *, char *);
+int _strncmp(char *, char *, int);
+char *_strcpy(char *, char *);
 
-void _puts(char *str);
+void _puts(char *);
+int _printf(const char *, ...);
+int _putchar(char);
 
-char *_strdup(char *str);
+int parsing_input(char *, int, char *[], int);
+int exe(char *, char **, char *, char **, char **, int);
+void modfree(char *, char **, char *, char **);
+int checkbltin(char *, char **, char *, char **);
+int tokcount(char *);
+int findpath(char *, char **);
+int findonpath(char **);
+void exepath(char *, char **);
+int formatMod(va_list *, const char *, int);
+int prchr(va_list *);
+int print_string(va_list *);
+int print_digit(va_list *);
+void getdigits(int);
+void changedir(char **);
 
-char *_strcat(char *dest, char *src);
-
-int _strcmp(char *s1, char *s2);
-
-int parse(char *line, int num_tokens, char *argv[], int failcount);
-
-int exe(char *line, char **ar, char *nln, char **arry, char **argv, int flcnt);
-
-void myfree(char *line, char **ar, char *newline, char **array);
-
-int _strncmp(char *s1, char *s2, int len);
-
-int checkbltin(char *line, char **ar, char *newline, char **array);
-
-int numcount(char *line);
-
-int searchpath(char *p, char **tokens);
-
-int findonpath(char **tokens);
-
-void executepath(char *p, char **tokens);
-
-int _printf(const char *format, ...);
-
-int chkfmt(va_list *args, const char *format, int i);
-
-int prchr(va_list *args);
-
-int prstr(va_list *args);
-
-int prdgt(va_list *args);
-
-void getdigits(int n);
-
-int _putchar(char c);
-
-void changedir(char **ar);
-
-#endif /* HOLBERTON_H */
+#endif

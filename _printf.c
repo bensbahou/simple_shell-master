@@ -1,21 +1,18 @@
 #include "main.h"
 /**
- * _printf - prints strings with formatted variables
- * @format: the string to format and print
+ * _printf - like standard printf
+ * @format: string to print with formating
  *
- * Return: the number of chars printed
+ * Return: printed char count
  */
 int _printf(const char *format, ...)
 {
-	int i = 0;
-	int chk = 0;
-	int retcount = 0;
+	int i = 0, chk = 0, retcount = 0;
 	va_list args;
-	fmt fmtspec[] = {
-		{"%", chkfmt},
-		{"\\", chkfmt},
-		{NULL, NULL}
-	};
+	formating fmtspec[] = {
+		{"%", formatMod},
+		{"\\", formatMod},
+		{NULL, NULL}};
 
 	va_start(args, format);
 
@@ -32,7 +29,7 @@ int _printf(const char *format, ...)
 				i++;
 			chk = 1;
 		}
-		if (chk == 0)
+		if (!chk)
 		{
 			_putchar(format[i]);
 			retcount++;
@@ -46,29 +43,26 @@ int _printf(const char *format, ...)
 }
 
 /**
- * chkfmt - checks the format modifer
+ * formatMod - checks the format modifer
  * @args: argument pointer
  * @format: the string
  * @i: the location of the modifer
  *
  * Return: count of anything printed
  */
-int chkfmt(va_list *args, const char *format, int i)
+int formatMod(va_list *args, const char *format, int i)
 {
 	int j = 0, x = 0;
-	fmt fmtmods[] = {
-		{"s", prstr},
-		{"d", prdgt},
-		{"i", prdgt},
-		{NULL, NULL}
-	};
+	formating fmtmods[] = {
+		{"s", print_string},
+		{"d", print_digit},
+		{"i", print_digit},
+		{NULL, NULL}};
 
 	i++;
 	if (format[i] == ' ')
-	{
 		while (format[i] == ' ')
 			i++;
-	}
 	if (format[i] == '%')
 	{
 		_putchar('%');
@@ -80,13 +74,9 @@ int chkfmt(va_list *args, const char *format, int i)
 		return (1);
 	}
 	while (fmtmods[j].type != NULL && *(fmtmods[j].ltr) != format[i])
-	{
 		j++;
-	}
 	if (fmtmods[j].type == NULL)
-	{
 		return (-1);
-	}
 	x = fmtmods[j].type(args);
 	return (x);
 }
@@ -99,36 +89,26 @@ void getdigits(int n)
 {
 	if (n > 0)
 		getdigits((n / 10));
-	if (n != 0)
-	{
+	if (n)
 		_putchar('0' + (n % 10));
-	}
 }
 /**
- * prdgt - prints digit passed from _printf
+ * print_digit - prints digit passed from _printf
  * @args: argument pointer
  *
  * Return: count of digits and signs printed
  */
-int prdgt(va_list *args)
+int print_digit(va_list *args)
 {
-	int rc = 0;
-	int n = va_arg(*args, int);
-	int x = n;
-	int ld = 1;
+	int rc = 0, n = va_arg(*args, int), x = n, ld = 1;
 
-	if (x < 0)
-		x *= -1;
-
+	x = (x < 0) ? -x : x;
 	while (x > 0)
-	{
-		x /= 10;
-		rc++;
-	}
+		x /= 10, rc++;
+
 	if (n < 0)
 	{
-		_putchar('-');
-		rc++;
+		_putchar('-'), rc++;
 		ld = n % 10;
 		n = n / -10;
 	}
@@ -139,8 +119,6 @@ int prdgt(va_list *args)
 	}
 	getdigits(n);
 	if (ld < 0)
-	{
 		_putchar('0' - ld);
-	}
 	return (rc);
 }
