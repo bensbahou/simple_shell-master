@@ -35,9 +35,7 @@ int _strcmp(char *, char *);
 int _strncmp(char *, char *, int);
 char *_strcpy(char *, char *);
 
-void _puts(char *);
-int _printf(const char *, ...);
-int _putchar(char);
+int _printf(const char *, ...); 
 
 int parsing_input(char *, int, char *[], int);
 int exe(char *, char **, char *, char **, char **, int);
@@ -48,7 +46,6 @@ int findpath(char *, char **);
 int findonpath(char **);
 void exepath(char *, char **);
 int formatMod(va_list *, const char *, int);
-int prchr(va_list *);
 int print_string(va_list *);
 int print_digit(va_list *);
 void getdigits(int);

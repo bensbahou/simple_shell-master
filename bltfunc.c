@@ -20,7 +20,9 @@ int checkbltin(char *line, char **ar, char *newline, char **array)
 	{
 		for (i = 0; environ[i] != NULL; i++)
 		{
-			_puts(environ[i]);
+			while (*environ[i] != '\0')
+				write(1, environ[i], 1), environ[i]++;
+
 			write(1, "\n", 1);
 		}
 		return (2);

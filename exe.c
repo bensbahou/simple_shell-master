@@ -42,9 +42,20 @@ int exe(char *line, char **ar, char *nln, char **arry, char **argv, int flcnt)
 		while (waitpid(-1, &status, 0) != child)
 			;
 	free(statbuf);
-	errno = status == 0 ? 0 : status == 512 ? 2
-						  : status == 65280 ? 127
-											: errno;
+	switch (status)
+	{
+	case 0:
+		errno = 0;
+		break;
+	case 512:
+		errno = 2;
+		break;
+	case 65280:
+		errno = 127;
+		break;
+	default:
+		break;
+	}
 	return (0);
 }
 
@@ -64,9 +75,7 @@ void exepath(char *p, char **tokens)
 	while (tokens[0][len2] != '\0')
 		len2++;
 	newp = malloc(sizeof(char) * (len + len2 + 2));
-	_strcpy(newp, p);
-	_strcat(newp, "/");
-	_strcat(newp, tokens[0]);
+	_strcpy(newp, p), _strcat(newp, "/"), _strcat(newp, tokens[0]);
 	newp[(len + len2 + 1)] = '\0';
 
 	child = fork();

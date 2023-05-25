@@ -89,15 +89,15 @@ int tokcount(char *line)
 
 int main(int argc, char *argv[])
 {
-	size_t bufsize = 0;
+	size_t buffer_size = 0;
 	char *line = NULL;
-	int i, num_tokens = 0, cmdcount = 1, shell_interaction;
+	int i, num_tokens = 0, cmdcount = 1;
+	int interactive_mode = isatty(STDIN_FILENO);
 
 	signal(SIGINT, SIG_IGN);
-	shell_interaction = isatty(STDIN_FILENO);
-	if (shell_interaction == 0 && argc == 1)
+	if (!interactive_mode && argc == 1)
 	{
-		while (getline(&line, &bufsize, stdin) > 0)
+		while (getline(&line, &buffer_size, stdin) > 0)
 		{
 			num_tokens = tokcount(line);
 			parsing_input(line, num_tokens, argv, cmdcount);
@@ -106,21 +106,18 @@ int main(int argc, char *argv[])
 		free(line);
 		return (0);
 	}
-	while (shell_interaction)
+	while (interactive_mode)
 	{
-		write(1, ">> ", 4);
-		num_tokens = 0;
-		i = getline(&line, &bufsize, stdin);
+		write(1, "($) ", 4), num_tokens = 0;
+		i = getline(&line, &buffer_size, stdin);
 		if (i < 0)
 		{
-			free(line);
-			write(1, "\n", 1);
+			free(line), write(1, "\n", 1);
 			break;
 		}
 		num_tokens = tokcount(line);
 		parsing_input(line, num_tokens, argv, cmdcount);
-		cmdcount++;
-		line = NULL;
+		cmdcount++, line = NULL;
 	}
 	return (0);
 }
