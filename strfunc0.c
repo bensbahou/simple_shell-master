@@ -8,14 +8,11 @@
  */
 char *_strcpy(char *dest, char *src)
 {
-	int i;
-	int len = 0;
-
-	while (*(src + len) != '\0')
-		len++;
-	for (i = 0; i <= len; i++)
-		*(dest + i) = *(src + i);
-	return (dest);
+	char *p = dest;
+	while ((*p++ = *src++))
+	{
+	}
+	return dest;
 }
 
 /**
@@ -51,12 +48,11 @@ char *_strdup(char *str)
  *
  * Return: 0 if strings are equal, -1 if not
  */
-int _strcmp(char *srt1, char *_str2)
+int _strcmp(char *s1, char *s2)
 {
-	for (; *srt1 || *_str2; srt1++, _str2++)
-		if (*srt1 != *_str2)
-			return -1;
-	return 0;
+	while (*s1 && *s2 && *s1 == *s2)
+		s1++, s2++;
+	return ((*s1 == *s2) ? 0 : -1);
 }
 
 /**
@@ -69,12 +65,19 @@ int _strcmp(char *srt1, char *_str2)
 
 int _strncmp(char *s1, char *s2, int len)
 {
-	for (; *s1 && *s2 && len >= 0; len--)
-		if (*s1 == *s2)
-			s1++, s2++;
-		else
-			return (-1);
-	return (0);
+	int i = 0;
+	for (i = 0; i < len; i++)
+	{
+		if (s1[i] != s2[i])
+		{
+			return -1;
+		}
+		if (s1[i] == '\0')
+		{
+			break;
+		}
+	}
+	return 0;
 }
 /**
  * _strcat - concatenates two strings
@@ -86,14 +89,15 @@ int _strncmp(char *s1, char *s2, int len)
 
 char *_strcat(char *dest, char *src)
 {
-	int i, len1 = 0, len2 = 0;
-
-	while (*(src + len1) != '\0')
-		len1++;
-	while (*(dest + len2) != '\0')
-		len2++;
-	for (i = 0; i <= len1; i++)
-		*(dest + (len2 + i)) = *(src + i);
-
-	return (dest);
+	char *p = dest;
+	while (*p)
+	{
+		p++;
+	}
+	while (*src)
+	{
+		*p++ = *src++;
+	}
+	*p = '\0';
+	return dest;
 }

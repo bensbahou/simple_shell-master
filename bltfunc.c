@@ -40,23 +40,19 @@ int checkbltin(char *line, char **ar, char *newline, char **array)
  */
 void changedir(char **ar)
 {
+	char *homeval = ar[1];
 	int i = 0;
-	char *homeval = NULL, *home = NULL;
 
-	if (ar[1] == NULL)
+	if (homeval == NULL)
+	{
 		for (i = 0; environ[i] != NULL; i++)
 		{
 			if (_strncmp("HOME=", environ[i], 5) == 0)
 			{
-				home = _strdup(environ[i]);
-				strtok(home, "=");
-				homeval = strtok(NULL, "=");
+				homeval = environ[i] + 5;
 				break;
 			}
 		}
-
-	else
-		homeval = ar[1];
+	}
 	chdir(homeval);
-	free(home);
 }

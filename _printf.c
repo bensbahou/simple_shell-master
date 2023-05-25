@@ -8,12 +8,13 @@
  */
 int print_string(va_list *args)
 {
-	int x = 0;
-	char *ar = va_arg(*args, char *);
+	char *str = va_arg(*args, char *);
+	int len = 0;
+	while (str[len] != '\0')
+		len++;
 
-	while (*ar != '\0')
-		write(1, ar, 1), x++, ar++;
-	return (x);
+	write(1, str, len);
+	return len;
 }
 
 /**
