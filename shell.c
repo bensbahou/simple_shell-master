@@ -72,15 +72,10 @@ int tokcount(char *line)
 	int num_tokens = 0, i, check = 1;
 
 	for (i = 0; line[i]; i++)
-	{
 		if (line[i] == ' ' || line[i] == 10 || line[i] == '\t')
 			check = 1;
 		else if (check == 1)
-		{
-			check = 0;
-			++num_tokens;
-		}
-	}
+			check = 0, ++num_tokens;
 	return (num_tokens);
 }
 
